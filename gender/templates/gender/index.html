@@ -1,0 +1,334 @@
+{% extends 'gender/base.html' %}
+{% load static %}
+
+{% block title %}Welcome - Support Platform{% endblock %}
+
+{% block content %}
+<div class="landing-container">
+    <div class="hero-section">
+        <div class="hero-content">
+            <div class="logo-container">
+                <div class="logo-circle">
+                    <div class="hands">
+                        <i class="bi bi-hand-index-thumb"></i>
+                        <i class="bi bi-dove"></i>
+                    </div>
+                </div>
+            </div>
+            <h1 class="main-title">Support Platform</h1>
+            <p class="lead-text">We provide immediate legal assistance and support for victims of rights violations, work to prevent such violations through technology, and raise legal awareness.</p>
+            
+            {% if not user.is_authenticated %}
+            <div class="action-buttons">
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg action-button login">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                </a>
+                <a href="{% url 'signup' %}" class="btn btn-outline-primary btn-lg action-button signup">
+                    <i class="bi bi-person-plus me-2"></i>Sign Up
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="statistics-section">
+        <div class="stat-card">
+            <div class="stat-number">5000+</div>
+            <div class="stat-label">People Helped</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Support Available</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">100+</div>
+            <div class="stat-label">Expert Volunteers</div>
+        </div>
+    </div>
+
+    <div class="features-section">
+        <h2 class="section-title">How We Can Help</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="bi bi-shield-fill"></i>
+                </div>
+                <h3>Safe Space</h3>
+                <p>A secure and confidential environment for seeking help and support. Your privacy is our top priority.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <h3>Professional Support</h3>
+                <p>Access to qualified legal and psychological assistance from experienced professionals.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="bi bi-book-fill"></i>
+                </div>
+                <h3>Resources</h3>
+                <p>Educational materials and legal guidance for the prevention of rights violations and the promotion of legal awareness</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="bi bi-chat-dots-fill"></i>
+                </div>
+                <h3>24/7 Chat Support</h3>
+                <p>Immediate assistance through our AI-powered chat system and human volunteers.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="services-section">
+        <h2 class="section-title">Our Services</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <img src="{% static 'gender/images/legal.jpg' %}" alt="Legal Support" class="service-image">
+                <div class="service-content">
+                    <h3>Legal Support</h3>
+                    <p>Free legal consultation and guidance through legal procedures</p>
+                    <ul class="service-list">
+                        <li><i class="bi bi-check-circle-fill"></i> Legal documentation help</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Court representation</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Rights education</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <img src="{% static 'gender/images/counseling.jpg' %}" alt="Counseling" class="service-image">
+                <div class="service-content">
+                    <h3>Psychological Support</h3>
+                    <p>Professional counseling and emotional support</p>
+                    <ul class="service-list">
+                        <li><i class="bi bi-check-circle-fill"></i> Individual therapy</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Group support sessions</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Crisis intervention</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-section">
+        <div class="cta-content">
+            <h2>Need Immediate Help?</h2>
+            <p>Our support team is available 24/7 to assist you in complete confidentiality.</p>
+            <a href="{% url 'signup' %}" class="btn btn-primary btn-lg cta-button">
+                <i class="bi bi-headset me-2"></i>Get Help Now
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --primary-purple: #9747FF;
+        --secondary-purple: #B07CFF;
+        --light-purple: #F3E8FF;
+        --accent-pink: #FF69B4;
+        --text-dark: #2D1F3F;
+    }
+
+    .landing-container {
+        background: linear-gradient(135deg, var(--light-purple) 0%, #fff 50%, var(--light-purple) 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    .hero-section {
+        text-align: center;
+        padding: 4rem 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .main-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin: 1rem 0;
+        background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .lead-text {
+        font-size: 1.2rem;
+        color: var(--text-dark);
+        max-width: 800px;
+        margin: 0 auto 2rem;
+    }
+
+    .statistics-section {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        padding: 2rem 0;
+        flex-wrap: wrap;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 10px 20px rgba(151, 71, 255, 0.1);
+        min-width: 200px;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-purple);
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: var(--text-dark);
+        font-weight: 500;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin: 3rem 0;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .feature-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 10px 20px rgba(151, 71, 255, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .feature-icon {
+        font-size: 2.5rem;
+        color: var(--primary-purple);
+        margin-bottom: 1rem;
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .service-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 20px rgba(151, 71, 255, 0.1);
+    }
+
+    .service-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .service-content {
+        padding: 2rem;
+    }
+
+    .service-list {
+        list-style: none;
+        padding: 0;
+        margin: 1rem 0 0;
+    }
+
+    .service-list li {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-dark);
+    }
+
+    .service-list i {
+        color: var(--primary-purple);
+    }
+
+    .cta-section {
+        background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink));
+        padding: 4rem 2rem;
+        text-align: center;
+        margin-top: 4rem;
+    }
+
+    .cta-content {
+        max-width: 800px;
+        margin: 0 auto;
+        color: white;
+    }
+
+    .cta-content h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .cta-button {
+        background: white;
+        color: var(--primary-purple);
+        border: none;
+        margin-top: 1.5rem;
+        font-weight: 600;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+    }
+
+    .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        background: var(--light-purple);
+        color: var(--primary-purple);
+    }
+
+    @media (max-width: 768px) {
+        .main-title {
+            font-size: 2.5rem;
+        }
+
+        .statistics-section {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-card {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .features-grid,
+        .services-grid {
+            grid-template-columns: 1fr;
+            padding: 1rem;
+        }
+    }
+</style>
+{% endblock %}

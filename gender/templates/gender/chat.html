@@ -1,0 +1,302 @@
+{% extends 'gender/base.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}Поддержка Чата{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Chat List Sidebar -->
+        <div class="col-md-4 col-lg-3">
+            <div class="card chat-list-card">
+                <div class="card-header">
+                    <h5 class="mb-0">Каналы Поддержки</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action active" data-type="legal">
+                        <i class="bi bi-shield-check"></i> Правовая Поддержка
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action" data-type="psychological">
+                        <i class="bi bi-heart"></i> Психологическая Поддержка
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action" data-type="general">
+                        <i class="bi bi-chat-dots"></i> Общая Поддержка
+                    </a>
+                    <a href="https://t.me/crownunity_bot" 
+                    target="_blank" rel="noopener"
+                    style="display: inline-block; padding: 12px 24px; background-color: white; color: #0077FF; text-decoration: none; border-radius: 0; font-weight: bold; font-family: sans-serif; transition: all 0.3s ease; box-shadow: none;"
+                    onmouseover="this.style.background='linear-gradient(45deg, #7F00FF, #0077FF)'; this.style.color='white'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.2)'"
+                    onmouseout="this.style.background='white'; this.style.color='#0077FF'; this.style.boxShadow='none'">
+                    <i style="margin-right: 8px;">📨</i> Поддержка в Телеграме
+                 </a>
+                 
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Window -->
+        <div class="col-md-8 col-lg-9">
+            <div class="card chat-window-card">
+                <div class="card-header chat-header">
+                    <div class="d-flex align-items-center">
+                        <div class="status-indicator online"></div>
+                        <h5 class="mb-0 ms-2">Правовая Поддержка</h5>
+                    </div>
+                </div>
+                <div class="card-body chat-messages" id="chatMessages">
+                    <!-- Messages will be dynamically loaded here -->
+                    <div class="message-group received">
+                        <div class="message">
+                            <div class="message-content">
+                                Здравствуйте! Чем я могу помочь?
+                            </div>
+                            <div class="message-time">10:00</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <form id="messageForm" class="message-form">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Введите ваше сообщение..." id="messageInput">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-send"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .chat-list-card {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        height: calc(100vh - 120px);
+    }
+
+    .chat-window-card {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        height: calc(100vh - 120px);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-header {
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: white;
+        padding: 1rem;
+    }
+
+    .status-indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+
+    .status-indicator.online {
+        background-color: #28a745;
+    }
+
+    .chat-messages {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 1.5rem;
+        background-color: #f8f9fa;
+    }
+
+    .message-group {
+        margin-bottom: 1rem;
+    }
+
+    .message {
+        max-width: 70%;
+        margin-bottom: 0.5rem;
+    }
+
+    .message-group.sent {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .message-group.sent .message-content {
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: white;
+        border-radius: 15px 15px 0 15px;
+    }
+
+    .message-group.received .message-content {
+        background: white;
+        border-radius: 15px 15px 15px 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .message-content {
+        padding: 0.8rem 1rem;
+    }
+
+    .message-time {
+        font-size: 0.75rem;
+        color: #6c757d;
+        margin-top: 0.25rem;
+    }
+
+    .message-form {
+        padding: 1rem;
+        background-color: white;
+        border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .message-form .form-control {
+        border-radius: 20px;
+        padding: 0.75rem 1rem;
+    }
+
+    .message-form .btn {
+        border-radius: 20px;
+        padding: 0.75rem 1.5rem;
+        margin-left: 0.5rem;
+    }
+
+    .list-group-item {
+        border: none;
+        padding: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .list-group-item i {
+        margin-right: 0.5rem;
+    }
+
+    .list-group-item.active {
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        border-color: transparent;
+    }
+
+    .list-group-item:hover:not(.active) {
+        background-color: #f8f9fa;
+        transform: translateX(5px);
+    }
+
+    /* Scrollbar Styling */
+    .chat-messages::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .chat-messages::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageForm = document.getElementById('messageForm');
+        const messageInput = document.getElementById('messageInput');
+        const chatMessages = document.getElementById('chatMessages');
+        const channelLinks = document.querySelectorAll('.list-group-item');
+        let currentChatType = 'legal'; // По умолчанию правовая поддержка
+
+        // Функция для добавления сообщения в чат
+        function addMessage(message, time, isAI = false) {
+            const messageHTML = `
+                <div class="message-group ${isAI ? 'received' : 'sent'}">
+                    <div class="message">
+                        <div class="message-content">
+                            ${message}
+                        </div>
+                        <div class="message-time">${time}</div>
+                    </div>
+                </div>
+            `;
+            chatMessages.insertAdjacentHTML('beforeend', messageHTML);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        messageForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const message = messageInput.value.trim();
+            if (message) {
+                const formData = new FormData();
+                formData.append('message', message);
+                formData.append('chat_type', currentChatType);
+                formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+                fetch('{% url "chat" %}', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        addMessage(data.user_message.text, data.user_message.time);
+                        addMessage(data.ai_response.text, data.ai_response.time, true);
+                        messageInput.value = '';
+                    } else {
+                        addMessage('Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте еще раз.', 
+                                 new Date().toLocaleTimeString(), true);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    addMessage('Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте еще раз.',
+                             new Date().toLocaleTimeString(), true);
+                });
+            }
+        });
+
+        // Обработка переключения каналов
+        channelLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Обновляем активное состояние
+                channelLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Получаем тип чата из data-атрибута
+                currentChatType = this.dataset.type;
+                
+                // Обновляем заголовок
+                document.querySelector('.chat-header h5').textContent = this.textContent.trim();
+                
+                // Очищаем сообщения чата
+                chatMessages.innerHTML = `
+                    <div class="message-group received">
+                        <div class="message">
+                            <div class="message-content">
+                                Здравствуйте! Чем я могу помочь?
+                            </div>
+                            <div class="message-time">${new Date().toLocaleTimeString()}</div>
+                        </div>
+                    </div>
+                `;
+
+                // Загружаем сообщения для выбранного типа чата
+                fetch(`{% url 'chat' %}?type=${currentChatType}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.messages && data.messages.length > 0) {
+                            chatMessages.innerHTML = '';
+                            data.messages.forEach(msg => {
+                                addMessage(msg.message_text, msg.sent_time, msg.is_ai_response);
+                            });
+                        }
+                    });
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <title>{% block title %}Support Platform{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary-purple: #9747FF;
+            --secondary-purple: #B07CFF;
+            --light-purple: #F3E8FF;
+            --accent-pink: #FF69B4;
+            --text-dark: #2D1F3F;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--light-purple);
+            min-height: 100vh;
+            top: 0 !important;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: rgba(255, 255, 255, 0.9) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(151, 71, 255, 0.1);
+            border-bottom: 1px solid rgba(151, 71, 255, 0.1);
+            padding: 1.5rem 0;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1000;
+            height: 100px;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-purple) !important;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: translateY(-2px);
+        }
+
+        .navbar-brand i {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin: 0 0.2rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-purple) !important;
+            background: var(--light-purple);
+            transform: translateY(-2px);
+        }
+
+        .nav-link i {
+            margin-right: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Help Buttons in Navbar */
+        .help-button {
+            padding: 0.5rem 1rem;  /* Уменьшили padding кнопок */
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            border: none;
+            color: white !important;
+            margin: 0 0.3rem;  /* Уменьшили отступы между кнопками */
+            font-size: 0.9rem;  /* Уменьшили размер шрифта */
+        }
+
+        .help-button i {
+            font-size: 1rem;  /* Уменьшили размер иконок */
+            margin: 0 !important;
+        }
+
+        .help-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(151, 71, 255, 0.2);
+        }
+
+        .help-button.sos {
+            background: linear-gradient(135deg, #ff6b6b, var(--accent-pink));
+        }
+
+        .help-button.legal {
+            background: linear-gradient(135deg, var(--primary-purple), #4dabf7);
+        }
+
+        .help-button.support {
+            background: linear-gradient(135deg, #40c057, #69db7c);
+        }
+
+        /* Auth Buttons */
+        .nav-auth-buttons {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .nav-login-btn {
+            color: var(--primary-purple) !important;
+            border: 2px solid var(--primary-purple);
+            border-radius: 12px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .nav-login-btn:hover {
+            background: var(--light-purple);
+            transform: translateY(-2px);
+        }
+
+        .nav-signup-btn {
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink));
+            color: white !important;
+            border: none;
+            border-radius: 12px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-signup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(151, 71, 255, 0.2);
+        }
+
+        /* Dropdown Styles */
+        .dropdown-menu {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(151, 71, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(151, 71, 255, 0.1);
+            border-radius: 15px;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .dropdown-item {
+            color: var(--text-dark);
+            font-weight: 500;
+            padding: 0.7rem 1rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: var(--light-purple);
+            color: var(--primary-purple);
+            transform: translateX(5px);
+        }
+
+        .dropdown-item i {
+            margin-right: 0.5rem;
+            color: var(--primary-purple);
+        }
+
+        /* Profile Dropdown Styles */
+        .profile-dropdown {
+            position: relative;
+        }
+
+        .profile-dropdown .dropdown-menu {
+            position: absolute;
+            right: 0;
+            left: auto;
+            top: 100%;
+            margin-top: 0.5rem;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(151, 71, 255, 0.1);
+            min-width: 200px;
+            z-index: 1001;
+        }
+
+        .profile-dropdown .dropdown-item {
+            padding: 0.7rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .profile-dropdown .dropdown-item:hover {
+            background-color: var(--light-purple);
+            color: var(--primary-purple);
+            transform: translateX(5px);
+        }
+
+        .profile-dropdown .dropdown-divider {
+            margin: 0.5rem 0;
+            border-color: rgba(151, 71, 255, 0.1);
+        }
+
+        .profile-dropdown .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .profile-dropdown .nav-link:hover {
+            background-color: var(--light-purple);
+        }
+
+        /* Language Switcher Styles */
+        #google_translate_element {
+            margin-right: 15px;
+        }
+        
+        #google_translate_element .goog-te-gadget {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+        }
+
+        #google_translate_element .goog-te-gadget-simple {
+            background-color: white !important;
+            border: 1px solid var(--primary-purple) !important;
+            border-radius: 20px !important;
+            padding: 5px 10px !important;
+            font-size: 14px !important;
+            color: var(--text-dark) !important;
+            cursor: pointer;
+            display: flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+        }
+
+        #google_translate_element .goog-te-gadget-simple img {
+            display: none !important;
+        }
+
+        #google_translate_element .goog-te-gadget-simple .goog-te-menu-value {
+            color: var(--text-dark) !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+        }
+
+        #google_translate_element .goog-te-gadget-simple .goog-te-menu-value span {
+            color: var(--text-dark) !important;
+            border: none !important;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+        }
+
+        #google_translate_element .goog-te-gadget-simple:hover {
+            border-color: var(--accent-pink) !important;
+            box-shadow: 0 2px 8px rgba(151, 71, 255, 0.1);
+        }
+
+        .goog-te-banner-frame {
+            display: none !important;
+        }
+
+        /* Центрирование навбара */
+        .navbar-nav {
+            margin: 0 auto;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 15px;
+                padding: 1rem;
+                margin-top: 1rem;
+                box-shadow: 0 10px 30px rgba(151, 71, 255, 0.1);
+            }
+
+            .help-button, .auth-button {
+                width: 100%;
+                justify-content: center;
+                margin: 0.3rem 0;  /* Уменьшили отступы на мобильных */
+                padding: 0.5rem;  /* Уменьшили padding на мобильных */
+            }
+
+            .auth-buttons {
+                flex-direction: column;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Apply Animations */
+        .navbar-brand {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .nav-link {
+            animation: slideIn 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .nav-item:nth-child(1) .nav-link { animation-delay: 0.1s; }
+        .nav-item:nth-child(2) .nav-link { animation-delay: 0.2s; }
+        .nav-item:nth-child(3) .nav-link { animation-delay: 0.3s; }
+        .nav-item:nth-child(4) .nav-link { animation-delay: 0.4s; }
+
+        .help-button {
+            animation: fadeIn 0.5s ease-out;
+            animation-delay: 0.5s;
+            animation-fill-mode: both;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'landing' %}">
+                <img style="height:55px;width: 60px;" src="{% static "gender/logo.jpg" %}" alt="">
+                <p> </p>CrownUnity
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                {% if user.is_authenticated %}
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">
+                            <i class="bi bi-house-door"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'courses' %}active{% endif %}" 
+                           href="{% url 'courses' %}">
+                            <i class="bi bi-book"></i> Courses
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'work_list' %}active{% endif %}" 
+                           href="{% url 'work_list' %}">
+                            <i class="bi bi-briefcase"></i> Works
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'donate' %}">
+                            <i class="bi bi-heart"></i> Donate
+                        </a>
+                    </li>
+                </ul>
+                {% endif %}
+
+                <div class="nav-auth-buttons">
+                    <div id="google_translate_element"></div>
+                    {% if user.is_authenticated %}
+                        <div class="nav-item dropdown profile-dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle fs-5"></i>
+                                <span>{{ user.username }}</span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{% url 'profile' %}">
+                                    <i class="bi bi-person"></i> My Profile
+                                </a></li>
+                                <li><a class="dropdown-item" href="{% url 'my_applications' %}">
+                                    <i class="bi bi-file-earmark-text"></i> Applications
+                                </a></li>
+                                <li><a class="dropdown-item" href="{% url 'history' %}">
+                                    <i class="bi bi-clock-history"></i> History
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'logout' %}">
+                                    <i class="bi bi-box-arrow-right"></i> Logout
+                                </a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <div class="d-flex align-items-center">
+                            <a href="{% url 'login' %}" class="nav-link me-3">
+                                <i class="bi bi-box-arrow-in-right"></i> Login
+                            </a>
+                            <a href="{% url 'signup' %}" class="nav-link">
+                                <i class="bi bi-person-plus"></i> Sign Up
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+    
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+          new google.translate.TranslateElement({
+            pageLanguage: 'en',          // Язык страницы по умолчанию
+            includedLanguages: 'en,ru,tg,fr,es',  // Поддерживаемые языки
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+          }, 'google_translate_element');
+        }
+      
+        // Подключаем скрипт Google Translate
+        (function() {
+          var script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+          document.body.appendChild(script);
+        })();
+    </script>
+    <script>
+        function updateNotifications() {
+            fetch('{% url "get_notifications" %}')
+                .then(response => response.json())
+                .then(data => {
+                    const notificationsList = document.getElementById('notificationsList');
+                    const notificationBadge = document.getElementById('notificationBadge');
+                    
+                    if (data.notifications.length > 0) {
+                        notificationBadge.textContent = data.notifications.length;
+                        notificationBadge.style.display = 'inline';
+                        
+                        notificationsList.innerHTML = '';
+                        data.notifications.forEach(notification => {
+                            const item = document.createElement('div');
+                            item.className = 'dropdown-item';
+                            item.innerHTML = `
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1">
+                                        <div>${notification.message}</div>
+                                        <small class="text-muted">${notification.created_at}</small>
+                                    </div>
+                                    <button class="btn btn-sm btn-link" onclick="markNotificationRead(${notification.id})">
+                                        <i class="bi bi-check2"></i>
+                                    </button>
+                                </div>
+                            `;
+                            notificationsList.appendChild(item);
+                        });
+                    } else {
+                        notificationBadge.style.display = 'none';
+                        notificationsList.innerHTML = '<div class="dropdown-item">Нет новых уведомлений</div>';
+                    }
+                });
+        }
+
+        function markNotificationRead(id) {
+            fetch(`/notifications/${id}/mark-read/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    updateNotifications();
+                }
+            });
+        }
+
+        // Обновляем уведомления при загрузке и каждые 30 секунд
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNotifications();
+            setInterval(updateNotifications, 30000);
+        });
+    </script>
+    {% if messages %}
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        {% for message in messages|slice:":3" %}
+        <div class="toast show" role="alert">
+            <div class="toast-header">
+                <i class="bi bi-info-circle me-2"></i>
+                <strong class="me-auto">Notification</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                {{ message }}
+            </div>
+        </div>
+    {% endfor %}    
+    </div>
+    {% endif %}
+</body>
+</html>
